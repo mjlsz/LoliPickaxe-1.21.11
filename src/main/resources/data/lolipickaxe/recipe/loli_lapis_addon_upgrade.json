@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "lolipickaxe:loli_lapis_addon_upgrade",
+  "ingredients": [
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_lapis_addon"
+    }
+  ],
+  "result": {
+    "id": "lolipickaxe:loli_lapis_addon",
+    "count": 1
+  }
+}

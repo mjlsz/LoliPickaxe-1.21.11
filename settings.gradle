@@ -1,0 +1,13 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { name = 'NeoForged mirror (BMCLAPI via QLU)'; url = 'https://mirrors4.qlu.edu.cn/bmclapi/' }
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'LoliPickaxe-1.21.11'

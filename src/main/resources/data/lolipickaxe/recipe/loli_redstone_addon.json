@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "lolipickaxe:loli_redstone_addon",
+  "result": {
+    "id": "lolipickaxe:loli_redstone_addon",
+    "count": 1
+  },
+  "pattern": [
+    "XYX",
+    "YXY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:redstone"
+    },
+    "Y": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "category": "misc"
+}

@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "lolipickaxe:loli_redstone_addon_upgrade",
+  "ingredients": [
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_redstone_addon"
+    }
+  ],
+  "result": {
+    "id": "lolipickaxe:loli_redstone_addon",
+    "count": 1
+  }
+}

@@ -1,0 +1,95 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+    id 'idea'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    // maven.neoforged.net is currently unreachable from this machine (and from
+    // most of mainland China). BMCLAPI mirrors the NeoForged repository and is
+    // used as a drop-in replacement; it is listed first so Gradle resolves there.
+    maven { name = 'BMCLAPI'; url = 'https://mirrors4.qlu.edu.cn/bmclapi/' }
+    maven { name = 'NeoForged'; url = 'https://maven.neoforged.net/releases/' }
+    maven { name = 'ParchmentMC'; url = 'https://maven.parchmentmc.org' }
+    mavenCentral()
+}
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    // No external mod dependencies: the port is self-contained.
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// Point every NeoForged-hosted repository at the reachable mirror.
+afterEvaluate {
+    repositories.configureEach { repo ->
+        if (repo instanceof MavenArtifactRepository) {
+            def u = repo.url.toString()
+            if (u.contains('maven.neoforged.net')) {
+                repo.url = uri('https://mirrors4.qlu.edu.cn/bmclapi/')
+            }
+        }
+    }
+}

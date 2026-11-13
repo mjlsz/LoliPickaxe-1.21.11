@@ -1,0 +1,17 @@
+# Gradle / build output
+build/
+.gradle/
+run/
+run-data/
+logs/
+*.iml
+.idea/
+out/
+
+# Local build helpers (machine specific)
+build2/
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db

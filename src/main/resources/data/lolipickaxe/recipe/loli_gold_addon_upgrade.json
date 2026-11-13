@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "lolipickaxe:loli_gold_addon_upgrade",
+  "ingredients": [
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    },
+    {
+      "item": "lolipickaxe:loli_gold_addon"
+    }
+  ],
+  "result": {
+    "id": "lolipickaxe:loli_gold_addon",
+    "count": 1
+  }
+}
