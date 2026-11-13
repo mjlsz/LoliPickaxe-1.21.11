@@ -1,5 +1,12 @@
 ﻿# LoliPickaxe 1.12.2 → 1.21.11 移植
 
+[![checks](https://github.com/mjlsz/LoliPickaxe-1.21.11/actions/workflows/build.yml/badge.svg)](https://github.com/mjlsz/LoliPickaxe-1.21.11/actions/workflows/build.yml)
+[![license](https://img.shields.io/badge/license-MIT%20(code)%20%2B%20assets%20reserved-blue)](LICENSE)
+[![minecraft](https://img.shields.io/badge/Minecraft-1.21.11-green)](https://minecraft.net)
+[![neoforge](https://img.shields.io/badge/NeoForge-21.11.48-orange)](https://neoforged.net)
+
+> 仓库：<https://github.com/mjlsz/LoliPickaxe-1.21.11>
+
 > 原模组：`LoliPickaxe-1.2.12-1.12.2.jar`（作者 Is_GK，Forge 1.12.2，含 ASM coremod）
 > 目标：Minecraft **1.21.11** / **NeoForge 21.11.48**，Java 21
 
