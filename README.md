@@ -12,7 +12,7 @@
 
 ---
 
-## 0. 交付状态：已通过真机验证 ✅
+## 0. 状态：已通过真机验证 
 
 2026-11-13 在 NeoForge 21.11.48 / Minecraft 1.21.11 客户端中实测：模组正常加载，
 创造页、物品贴图、方块、合成、GUI 全部可用。
@@ -147,20 +147,6 @@ F:\ds\lolipickaxe-port\refs\neoforge-src\ # NeoForge 21.11.48 源码（API 对�
 
 ---
 
-## 4. 构建
-
-网络恢复（或使用能访问 `maven.neoforged.net` 的代理）后：
-
-```powershell
-$env:JAVA_HOME = "F:\ds\lolipickaxe-port\tools\jdk21\jdk-21.0.13+9"
-cd F:\ds\lolipickaxe-port\LoliPickaxe
-F:\ds\lolipickaxe-port\tools\gradle-9.2.1\bin\gradle.bat build
-```
-
-产物：`build/libs/lolipickaxe-2.0.0.jar`
-
-若仍走镜像，确认 `settings.gradle` 中 BMCLAPI 仓库排在第一位；
-一旦官方源恢复，可删除 `build.gradle` 末尾的 URL 改写块。
 
 
 
