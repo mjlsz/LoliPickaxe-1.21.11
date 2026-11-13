@@ -12,8 +12,15 @@ import com.anotherstar.common.item.ItemLoliRecord;
 import com.anotherstar.common.item.ItemSmallLoliPickaxe;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.Tool;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -53,7 +60,22 @@ public final class ModItems {
     }
 
     public static DeferredItem<ItemLoliPickaxe> LOLI_PICKAXE = ITEMS.registerItem("loli_pickaxe",
-            ItemLoliPickaxe::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
+            ItemLoliPickaxe::new, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()
+                    .component(net.minecraft.core.component.DataComponents.TOOL, allBlocksTool()));
+
+    /**
+     * Tool component that mines every "mineable" block almost instantly and always drops,
+     * so the Loli Pickaxe behaves like the 1.12.2 original in survival.
+     */
+    private static Tool allBlocksTool() {
+        List<Tool.Rule> rules = new ArrayList<>();
+        for (TagKey<Block> tag : List.of(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_SHOVEL,
+                BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_HOE, BlockTags.LEAVES)) {
+            BuiltInRegistries.BLOCK.get(tag)
+                    .ifPresent(set -> rules.add(Tool.Rule.minesAndDrops(set, 200.0F)));
+        }
+        return new Tool(rules, 200.0F, 0, true);
+    }
     public static DeferredItem<ItemSmallLoliPickaxe> SMALL_LOLI_PICKAXE = ITEMS.registerItem("small_loli_pickaxe",
             ItemSmallLoliPickaxe::new, new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant());
 

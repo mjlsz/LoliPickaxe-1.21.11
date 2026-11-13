@@ -49,6 +49,7 @@ public final class Config {
     public static final ModConfigSpec.BooleanValue BLUE_SCREEN_ATTACK = BUILDER.define("loliPickaxeBlueScreenAttack", true);
     public static final ModConfigSpec.BooleanValue EXIT_ATTACK = BUILDER.define("loliPickaxeExitAttack", true);
     public static final ModConfigSpec.BooleanValue FAIL_RESPOND_ATTACK = BUILDER.define("loliPickaxeFailRespondAttack", true);
+    public static final ModConfigSpec.BooleanValue BREAK_UNBREAKABLE = BUILDER.define("loliPickaxeBreakUnbreakable", true);
     public static final ModConfigSpec.BooleanValue KILL_FACING = BUILDER.define("loliPickaxeKillFacing", true);
     public static final ModConfigSpec.IntValue KILL_FACING_RANGE = BUILDER.defineInRange("loliPickaxeKillFacingRange", 20, 0, 100);
     public static final ModConfigSpec.DoubleValue KILL_FACING_SLOPE = BUILDER.defineInRange("loliPickaxeKillFacingSlope", 0.5D, 0.0D, 10.0D);
@@ -100,6 +101,7 @@ public final class Config {
             case "loliPickaxeExitAttack" -> EXIT_ATTACK.get();
             case "loliPickaxeFailRespondAttack" -> FAIL_RESPOND_ATTACK.get();
             case "loliPickaxeKillFacing" -> KILL_FACING.get();
+            case "loliPickaxeBreakUnbreakable" -> BREAK_UNBREAKABLE.get();
             default -> false;
         };
     }
@@ -188,6 +190,7 @@ public final class Config {
         FLAGS.put("loliPickaxeBlueScreenAttack", BLUE_SCREEN_ATTACK);
         FLAGS.put("loliPickaxeExitAttack", EXIT_ATTACK);
         FLAGS.put("loliPickaxeFailRespondAttack", FAIL_RESPOND_ATTACK);
+        FLAGS.put("loliPickaxeBreakUnbreakable", BREAK_UNBREAKABLE);
         FLAGS.put("loliPickaxeKillFacing", KILL_FACING);
         FLAGS.put("loliPickaxeKillFacingRange", KILL_FACING_RANGE);
         FLAGS.put("loliPickaxeKillFacingSlope", KILL_FACING_SLOPE);

@@ -16,6 +16,9 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 /** Replacement for the old {@code LoliPickaxeEvent} / {@code SmallLoliFlyEvent} classes. */
 public final class CommonEvents {
 
+    /** Players we granted flight to, so it can be revoked when they stop holding the item. */
+    private static final java.util.Set<java.util.UUID> GRANTED_FLIGHT = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
     private CommonEvents() {
     }
 
@@ -84,21 +87,68 @@ public final class CommonEvents {
                 net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT.get(key).ifPresent(holder ->
                         player.addEffect(new net.minecraft.world.effect.MobEffectInstance(holder, 410, entry.getIntOr("lvl", 0), false, false)));
             }
-            player.getAbilities().mayfly = true;
-            player.getAbilities().flying = true;
-            player.onUpdateAbilities();
-        } else if (!player.isCreative() && player.getAbilities().mayfly && !player.isSpectator()) {
-            // only remove flight that we granted: tracked by mayFly default
+            // flight handled below
         }
 
-        // small loli pickaxe: fly upgrade
+        // Flight: allowed while holding the Loli Pickaxe or a Small Loli Pickaxe with the fly upgrade.
+        // Never force `flying` - that made the player unable to walk or land.
+        boolean flightAllowed = hasLoli;
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
             if (stack.getItem() instanceof ItemSmallLoliPickaxe small && small.canFly(stack)) {
-                player.getAbilities().mayfly = true;
-                player.onUpdateAbilities();
+                flightAllowed = true;
                 break;
             }
+        }
+        if (flightAllowed) {
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = true;
+                player.onUpdateAbilities();
+                GRANTED_FLIGHT.add(player.getUUID());
+            }
+        } else if (GRANTED_FLIGHT.remove(player.getUUID()) && !player.isCreative() && !player.isSpectator()) {
+            player.getAbilities().mayfly = false;
+            player.getAbilities().flying = false;
+            player.onUpdateAbilities();
+        }
+    }
+
+    /**
+     * The Loli Pickaxe also breaks blocks that are normally unbreakable (bedrock, barrier...),
+     * mirroring the 1.12.2 DestroyBedrockEvent.
+     */
+    @SubscribeEvent
+    public static void onLeftClickBlock(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock event) {
+        if (event.getAction() != net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock.Action.START) {
+            return;
+        }
+        if (!(event.getEntity() instanceof Player player) || player.level().isClientSide()) {
+            return;
+        }
+        ItemStack stack = player.getMainHandItem();
+        if (!(stack.getItem() instanceof ItemLoliPickaxe)
+                || !Config.getBoolean(stack, "loliPickaxeBreakUnbreakable")) {
+            return;
+        }
+        var level = player.level();
+        var pos = event.getPos();
+        var state = level.getBlockState(pos);
+        if (state.isAir() || state.getDestroySpeed(level, pos) >= 0.0F) {
+            return;
+        }
+        boolean bedrock = state.is(net.minecraft.world.level.block.Blocks.BEDROCK);
+        level.destroyBlock(pos, !player.isCreative() && !bedrock, player);
+        if (bedrock && !player.isCreative()) {
+            net.minecraft.world.level.block.Block.popResource(level, pos, new ItemStack(net.minecraft.world.item.Items.BEDROCK));
+        }
+        event.setCanceled(true);
+    }
+
+    /** Fallback: any block the tool rules miss still breaks instantly. */
+    @SubscribeEvent
+    public static void onBreakSpeed(net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed event) {
+        if (event.getEntity().getMainHandItem().getItem() instanceof ItemLoliPickaxe) {
+            event.setNewSpeed(Math.max(event.getNewSpeed(), 200.0F));
         }
     }
 
@@ -106,9 +156,13 @@ public final class CommonEvents {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof ItemSmallLoliPickaxe)) {
-            return;
+        if (stack.getItem() instanceof ItemLoliPickaxe loliPickaxe) {
+            int radius = loliPickaxe.getRange(stack);
+            if (radius > 0) {
+                LoliUtil.mineCube(player.level(), player, event.getPos(), radius, stack);
+            }
+        } else if (stack.getItem() instanceof ItemSmallLoliPickaxe) {
+            LoliUtil.mineArea(player, stack, event.getPos());
         }
-        LoliUtil.mineArea(player, stack, event.getPos());
     }
 }

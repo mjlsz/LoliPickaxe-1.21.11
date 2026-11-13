@@ -182,6 +182,30 @@ public final class LoliUtil {
         }
     }
 
+    /** Breaks a cube around {@code origin}; used by the Loli Pickaxe's range setting. */
+    public static int mineCube(net.minecraft.world.level.Level level, Player player, BlockPos origin, int radius, ItemStack tool) {
+        int broken = 0;
+        int clamped = Math.min(radius, 6);
+        for (int dx = -clamped; dx <= clamped; dx++) {
+            for (int dy = -clamped; dy <= clamped; dy++) {
+                for (int dz = -clamped; dz <= clamped; dz++) {
+                    BlockPos pos = origin.offset(dx, dy, dz);
+                    if (pos.equals(origin)) {
+                        continue;
+                    }
+                    var state = level.getBlockState(pos);
+                    if (state.isAir() || state.getDestroySpeed(level, pos) < 0.0F) {
+                        continue;
+                    }
+                    if (level.destroyBlock(pos, !player.isCreative(), player)) {
+                        broken++;
+                    }
+                }
+            }
+        }
+        return broken;
+    }
+
     public static void collectDrops(Player player, List<ItemEntity> drops) {
         for (ItemEntity drop : drops) {
             drop.playerTouch(player);
